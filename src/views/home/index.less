@@ -1,0 +1,22 @@
+@import url('@/assets/css/public.less');
+
+.home {
+    --convert-bg-color: #121316;
+    --convert-border-color: #292d3a;
+    height: 100vh;
+    background-color: var(--convert-bg-color);
+    display: flex;
+    flex-flow: row nowrap;
+    .menu-wrap {
+      width: 30px;
+      border-right: 1px solid var(--convert-border-color);
+    }
+    .video-wrap {
+      flex: 1;
+      min-width: 1px;
+    }
+    .file-wrap {
+      width: 250px;
+      border-left: 1px solid var(--convert-border-color);
+    }
+}

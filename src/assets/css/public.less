@@ -1,0 +1,48 @@
+#public() {
+    .colorFulBorder() {
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-image: linear-gradient(to right, #ed4264 , #ffedbc );
+          }
+    }
+
+    // .borderSet {
+    //     box-shadow: 0px 0px 4px var(--shadow-color);
+    // }
+    .borderAll(@color, @size){
+        border: @size solid @color;
+    }
+    .borderTop(@color, @size){
+        border-top: @size solid @color;
+    }
+    .borderBottom(@color, @size){
+        border-bottom: @size solid @color;
+    }
+    .borderLeft(@color, @size){
+        border-left: @size solid @color;
+    }
+    .borderRight(@color, @size){
+        border-right: @size solid @color;
+    }
+    
+    .border(@position, @color: var(--border-color), @size: 2px) when (@position = all) {
+        #public.borderAll(@color, @size);
+    }
+    .border(@position, @color: var(--border-color), @size: 2px) when (@position = top) {
+        #public.borderTop(@color, @size);
+    }
+    .border(@position, @color: var(--border-color), @size: 2px) when (@position = bottom) {
+        #public.borderBottom(@color, @size);
+    }
+    .border(@position, @color: var(--border-color), @size: 2px) when (@position = left) {
+        #public.borderLeft(@color, @size);
+    }
+    .border(@position, @color: var(--border-color), @size: 2px) when (@position = right) {
+        #public.borderRight(@color, @size);
+    }
+}
