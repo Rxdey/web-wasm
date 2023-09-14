@@ -1,10 +1,12 @@
 <template>
   <div class="home">
     <div class="menu-wrap"></div>
+    <div class="file-wrap" v-drag.right="{ minWidth: 200, maxWidth: 500 }">
+
+    </div>
     <div class="video-wrap">
       <VideoPlayer />
     </div>
-    <div class="file-wrap"></div>
   </div>
 </template>
 

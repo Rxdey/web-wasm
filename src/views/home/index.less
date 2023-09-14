@@ -1,22 +1,26 @@
 @import url('@/assets/css/public.less');
 
 .home {
-    --convert-bg-color: #121316;
-    --convert-border-color: #292d3a;
+    --convert-bg-color: rgb(30, 30, 30);
+    --convert-border-color: rgb(65, 65, 65);
     height: 100vh;
     background-color: var(--convert-bg-color);
     display: flex;
     flex-flow: row nowrap;
     .menu-wrap {
-      width: 30px;
-      border-right: 1px solid var(--convert-border-color);
+        width: 30px;
+        // border-right: 1px solid var(--convert-border-color);
+        background-color: rgb(53, 53, 53);
+    }
+
+    .file-wrap {
+        width: 250px;
+        // border-left: 1px solid var(--convert-border-color);
+        background-color: rgb(39, 39, 39);
+        position: relative;
     }
     .video-wrap {
-      flex: 1;
-      min-width: 1px;
-    }
-    .file-wrap {
-      width: 250px;
-      border-left: 1px solid var(--convert-border-color);
+        flex: 1;
+        min-width: 1px;
     }
 }

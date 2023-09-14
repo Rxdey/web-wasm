@@ -1,9 +1,10 @@
 <template>
     <div class="video-player">
         <div class="video-player__container">
-            <Upload v-model="videoData" v-if="!videoData.file" />
+            <div class="video-player--upload" v-if="!videoData.file">
+                <Upload v-model="videoData" />
+            </div>
             <div class="video-player--video" v-else @click="onChangePlayStatus">
-
                 <video ref="video" id="video" :src="videoData.url" @loadedmetadata="onInit" @timeupdate="onTimeupdate" muted></video>
 
                 <div class="control" v-if="!!videoData" @click.stop>
@@ -33,12 +34,15 @@
             </div>
         </div>
         <!-- 工具栏 -->
-        <div class="video-player__tool">
+        <div class="video-player__tool" v-drag.top="{maxHeight: 500, minHeight: 180}">
+            <div class="video-player--btnwrap">
+                <div id="timeline"></div>
+            </div>
+            <div class="video-player--timeline">
+                <div id="timeline"></div>
+            </div>
+        </div>
 
-        </div>
-        <div class="video-player__timeline">
-            <div id="timeline"></div>
-        </div>
     </div>
 </template>
 
