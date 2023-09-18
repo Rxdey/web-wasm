@@ -4,8 +4,8 @@
             <div class="video-player--upload" v-if="!videoData.url">
                 <Upload v-model="videoData" />
             </div>
-            <div class="video-player--video" v-else @click="onChangePlayStatus">
-                <video ref="video" id="video" :src="videoData.url" @loadedmetadata="onInit" @timeupdate="onTimeupdate" muted></video>
+            <div class="video-player--video" v-else>
+                <video ref="video" id="video" :src="videoData.url" @loadedmetadata="onInit" @timeupdate="onTimeupdate" muted @click="onChangePlayStatus"></video>
 
                 <div class="control" v-if="!!videoData" @click.stop>
                     <div class="control-wrap">
@@ -23,7 +23,13 @@
                             <div class="voice-line" @click.stop="onVoiceClick" :style="`--voice-width: ${volume * 100}%`"></div>
                         </span>
                     </div>
+
                     <div class="control-wrap">
+                        <span class="control-button" title="全屏" @click="fullscreen">
+                            <el-icon :size="24">
+                                <v-icon icon="mdi:fullscreen" />
+                            </el-icon>
+                        </span>
                         <span class="control-button" title="移除" @click="onRemove(false)">
                             <el-icon :size="24">
                                 <v-icon icon="mdi:close" />
@@ -96,6 +102,11 @@ const onRemove = (isCustom = false) => {
     if (!isCustom) store.UPDATE_ACTIVE_VIDEO_ID(null);
 };
 
+const fullscreen = () => {
+    if (video.value) {
+        video.value.requestFullscreen();
+    }
+}
 const onLoading = (e: boolean) => {
     loading.value = e;
 }
