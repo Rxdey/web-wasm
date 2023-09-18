@@ -20,14 +20,14 @@ const createDragField = (el: HTMLElement, posiotn: DragDirection, limit: DragPar
     };
     const positonStyle = {
         left: {
-            width: '3px',
+            width: '4px',
             height: '100%',
             left: '0',
             top: '0',
             cursor: 'e-resize'
         },
         right: {
-            width: '3px',
+            width: '4px',
             height: '100%',
             right: '0',
             top: '0',
@@ -35,14 +35,14 @@ const createDragField = (el: HTMLElement, posiotn: DragDirection, limit: DragPar
         },
         top: {
             width: '100%',
-            height: '3px',
+            height: '4px',
             left: '0',
             top: '0',
             cursor: 'ns-resize'
         },
         bottom: {
             width: '100%',
-            height: '3px',
+            height: '4px',
             left: '0',
             bottom: '0',
             cursor: 'ns-resize'

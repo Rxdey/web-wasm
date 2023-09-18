@@ -1,7 +1,7 @@
 <template>
     <div class="upload" @drop="onDrop" @dragleave="onDragleave" @dragenter="onDragenter" @click="onClick">
         {{ props.label }}
-        <input type="file" ref="fileInput" multiple hidden @change="onFileChange">
+        <input type="file" ref="fileInput" accept="video/*" multiple hidden @change="onFileChange">
     </div>
 </template>
 
@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<{
 const emit = defineEmits(['change', 'update:modelValue']);
 const fileInput = ref<HTMLInputElement | null>(null);
 const videoFile = ref<VideoFile>({});
-
+/** 校验文件 */
 const vaildFile = (files: FileList | []) => {
     const fileList = Array.from(files);
     if (!fileList.length) return;
@@ -37,6 +37,7 @@ const vaildFile = (files: FileList | []) => {
         url: window.URL.createObjectURL(files[0]),
         file: files[0]
     };
+    console.log(videoFile.value)
     emit('change', videoFile.value);
 };
 const { uploadLoading, onDrop, onDragleave, onDragenter, onFileChange } = useDrag(vaildFile);

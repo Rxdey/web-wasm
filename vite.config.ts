@@ -44,6 +44,14 @@ export default defineConfig({
     headers: {
       "Cross-Origin-Embedder-Policy": "require-corp",
       "Cross-Origin-Opener-Policy": "same-origin",
+    },
+    proxy: {
+      '/api': { // 代理api
+        target: 'http://localhost:7052', // 服务器api地址
+        changeOrigin: true,
+        ws: true,
+        rewrite: path => path.replace(/^\/api/, '')
+      }
     }
   },
   optimizeDeps: { exclude: ["@ffmpeg/ffmpeg", "@ffmpeg/util", "ffmpeg"], },

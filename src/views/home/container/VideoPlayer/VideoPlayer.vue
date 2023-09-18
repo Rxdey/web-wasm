@@ -1,7 +1,7 @@
 <template>
     <div class="video-player">
         <div class="video-player__container">
-            <div class="video-player--upload" v-if="!videoData.file">
+            <div class="video-player--upload" v-if="!videoData.url">
                 <Upload v-model="videoData" />
             </div>
             <div class="video-player--video" v-else @click="onChangePlayStatus">
@@ -24,7 +24,7 @@
                         </span>
                     </div>
                     <div class="control-wrap">
-                        <span class="control-button" title="移除" @click="onRemove">
+                        <span class="control-button" title="移除" @click="onRemove(false)">
                             <el-icon :size="24">
                                 <v-icon icon="mdi:close" />
                             </el-icon>
@@ -34,9 +34,9 @@
             </div>
         </div>
         <!-- 工具栏 -->
-        <div class="video-player__tool" v-drag.top="{maxHeight: 500, minHeight: 180}">
+        <div class="video-player__tool" v-drag.top="{ maxHeight: 500, minHeight: 180 }">
             <div class="video-player--btnwrap">
-                <div id="timeline"></div>
+                <ToolMenu :videoData="videoData" />
             </div>
             <div class="video-player--timeline">
                 <div id="timeline"></div>
@@ -47,16 +47,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, nextTick, computed, watch, onMounted } from 'vue';
 import Timeline from '@/utils/lib/timeline';
 import Upload, { type VideoFile } from '../../components/Upload/Upload.vue';
+import ToolMenu from './ToolMenu.vue';
 import { useVideo } from './useVideo';
+import { VideoDetail } from '@/server/model/video';
+import { userMainStore } from '@/store/modules/userMainStore';
 
+const store = userMainStore();
 const { video, volume, paused, muted, register, onVolumeChange, onVoiceClick, onChangePlayStatus, setVideoTime } = useVideo();
 
 let timeline: any = null;
-const videoData = ref<VideoFile>({})
-const loading = ref(false)
+const videoData = ref<VideoFile>({});
+const loading = ref(false);
+const customVideo = computed(() => store.customVideo);
 
 const onInit = () => {
     register();
@@ -76,21 +81,41 @@ const onInit = () => {
 };
 /** 播放进度 */
 const onTimeupdate = (e: Event) => {
+    if (!timeline) return;
     timeline.play(Math.floor((<HTMLVideoElement>e.target).currentTime * 1000));
 };
-const onRemove = () => {
+/** 移除视频 */
+const onRemove = (isCustom = false) => {
     videoData.value = {};
-    timeline.destory();
-    timeline = null;
+    if (timeline) {
+        timeline.destory();
+        timeline = null;
+    }
     paused.value = true;
     video.value = null;
+    if (!isCustom) store.UPDATE_ACTIVE_VIDEO_ID(null);
 };
+
 const onLoading = (e: boolean) => {
     loading.value = e;
 }
 
 onMounted(() => {
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.code.toUpperCase() !== 'SPACE') return;
+        if (video.value && videoData.value.url) {
+            paused.value = !paused.value;
+        }
+    })
+});
 
+watch(() => customVideo.value, (val) => {
+    if (val) {
+        onRemove(true);
+        nextTick(() => {
+            videoData.value.url = val.path;
+        })
+    }
 });
 
 </script>
