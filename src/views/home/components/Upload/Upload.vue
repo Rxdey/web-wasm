@@ -9,22 +9,18 @@
 import { ref, watch } from 'vue';
 import { useDrag } from './useDrag';
 import { ElMessage } from 'element-plus';
+import { userMainStore } from '@/store/modules/userMainStore';
 
-export type VideoFile = {
-    url?: string,
-    file?: File
-}
+const store = userMainStore();
+
 const props = withDefaults(defineProps<{
     label?: string
-    modelValue?: VideoFile,
 }>(), {
     label: 'click/drag to upload',
-    modelValue: () => ({})
 });
 
-const emit = defineEmits(['change', 'update:modelValue']);
+const emit = defineEmits(['change']);
 const fileInput = ref<HTMLInputElement | null>(null);
-const videoFile = ref<VideoFile>({});
 /** 校验文件 */
 const vaildFile = (files: FileList | []) => {
     const fileList = Array.from(files);
@@ -33,12 +29,10 @@ const vaildFile = (files: FileList | []) => {
         ElMessage.error('请不要上传非视频文件');
         return;
     }
-    videoFile.value = {
-        url: window.URL.createObjectURL(files[0]),
-        file: files[0]
-    };
-    console.log(videoFile.value)
-    emit('change', videoFile.value);
+    store.UPDATE_VIDEO_DATA({
+        path: window.URL.createObjectURL(files[0]),
+    })
+    emit('change', files[0]);
 };
 const { uploadLoading, onDrop, onDragleave, onDragenter, onFileChange } = useDrag(vaildFile);
 
@@ -47,13 +41,6 @@ const onClick = () => {
     fileInput.value.value = '';
     fileInput.value.click();
 };
-
-watch(() => videoFile.value, (val) => {
-    emit('update:modelValue', val);
-})
-watch(() => props.modelValue, (val) => {
-    videoFile.value = val;
-})
 
 
 </script>

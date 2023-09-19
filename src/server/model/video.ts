@@ -2,19 +2,19 @@ import request from '../request';
 import { ResponseType } from '../responseTypes';
 
 export type VideoDetail = {
-    content: string;
-    create_date: Date;
+    content?: string;
+    create_date?: Date;
     id: number;
-    is_show: number;
-    origin: string;
+    is_show?: number;
+    origin?: string;
     path: string;
     cover: string;
-    preview_img: null;
-    title: string;
-    type: string;
-    uid: number;
-    update_date: Date;
-    created: Date;
+    preview_img?: null;
+    title?: string;
+    type?: string;
+    uid?: number;
+    update_date?: Date;
+    created?: Date;
 }
 
 type VideoListParams = {

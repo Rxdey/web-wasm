@@ -3,22 +3,23 @@ import { defineStore } from 'pinia'
 import Server from '@/server';
 import { BASE_URL } from '@/server/api.config';
 
+// 遴选部分改为可选值
+type CreateDocumentOptions<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+type CustomVideoData = CreateDocumentOptions<VideoDetail, 'id'|'cover'>|null;
 interface MainState {
     loading: boolean;
     videoList?: VideoDetail[] | null;
-    activeVideoId?: number | null;
+    videoData?: CustomVideoData
 }
 
 export const userMainStore = defineStore('main', {
     state: (): MainState => ({
         loading: false,
         videoList: null,
-        activeVideoId: null,
+        videoData: null
     }),
     actions: {
-        UPDATE_ACTIVE_VIDEO_ID(id: number | null) {
-            this.activeVideoId = id;
-        },
         async GET_VIDEO_LIST({ force = false }) {
             if (this.videoList) return this.videoList;
             const res = await Server.requestVideoList({});
@@ -31,12 +32,15 @@ export const userMainStore = defineStore('main', {
             }));
             this.videoList = list;
             return list;
+        },
+        UPDATE_VIDEO_DATA(data: CustomVideoData) {
+            this.videoData = data;
         }
     },
-    getters: {
-        customVideo(state) {
-            if (!state.videoList) return null;
-            return state.videoList?.find(item => item.id === state.activeVideoId);
-        }
-    }
+    // getters: {
+    //     customVideo(state) {
+    //         if (!state.videoList) return null;
+    //         return state.videoList?.find(item => item.id === state.activeVideoId);
+    //     }
+    // }
 })

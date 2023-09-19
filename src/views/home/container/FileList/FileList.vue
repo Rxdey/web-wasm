@@ -24,10 +24,10 @@ const store = userMainStore();
 const isShowName = ref(true);
 
 const videoList = computed(() => store.videoList);
-const activeVideoId = computed(() => store.activeVideoId);
+const activeVideoId = computed(() => store.videoData?.id);
 
 const selectFile = (video: VideoDetail) => {
-    store.UPDATE_ACTIVE_VIDEO_ID(video.id)
+    store.UPDATE_VIDEO_DATA(video)
 };
 
 onMounted(() => {
