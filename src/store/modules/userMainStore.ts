@@ -6,11 +6,19 @@ import { BASE_URL } from '@/server/api.config';
 // 遴选部分改为可选值
 type CreateDocumentOptions<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
-type CustomVideoData = CreateDocumentOptions<VideoDetail, 'id'|'cover'>|null;
+export type CustomVideoData = CreateDocumentOptions<VideoDetail, 'id' | 'cover'> & {
+    /** 时长 */
+    duration?: number;
+    /** 文件大小 */
+    size?: number;
+    /** 文件类型 */
+    type?: string;
+};
+
 interface MainState {
     loading: boolean;
-    videoList?: VideoDetail[] | null;
-    videoData?: CustomVideoData
+    videoList?: VideoDetail[]|null;
+    videoData?: CustomVideoData|null
 }
 
 export const userMainStore = defineStore('main', {
@@ -33,7 +41,7 @@ export const userMainStore = defineStore('main', {
             this.videoList = list;
             return list;
         },
-        UPDATE_VIDEO_DATA(data: CustomVideoData) {
+        UPDATE_VIDEO_DATA(data: CustomVideoData|null) {
             this.videoData = data;
         }
     },

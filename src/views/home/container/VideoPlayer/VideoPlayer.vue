@@ -1,23 +1,19 @@
 <template>
     <div class="video-player">
-        <div class="video-player__container">
-            <div class="video-player--upload" v-if="!videoData">
-                <Upload />
-            </div>
-            <div class="video-player--video" v-else>
-                <VideoInner ref="videoRef" />
-            </div>
+        <div class="video-player--upload" v-if="!videoData">
+            <Upload />
         </div>
-        <!-- 工具栏 -->
-        <div class="video-player__tool" v-drag.top="{ maxHeight: 500, minHeight: 180 }">
-            <div class="video-player--btnwrap">
-                <ToolMenu />
+        <template v-else>
+            <div class="video-player--video">
+                <VideoInner ref="videoRef" @onLoad="onVideoLoaded">
+                    <ToolMenu @operate="onOperate" />
+                </VideoInner>
             </div>
-            <div class="video-player--timeline">
-                <div id="timeline"></div>
+            <div class="video-player--operate">
+                <component :is="comActions[ativeComponents]" v-if="ativeComponents"></component>
+                <div class="tip" v-else>选择时间轴上方操作按钮</div>
             </div>
-        </div>
-
+        </template>
     </div>
 </template>
 
@@ -27,9 +23,27 @@ import Upload from '../../components/Upload/Upload.vue';
 import ToolMenu from './ToolMenu.vue';
 import VideoInner from './VideoInner.vue';
 import { userMainStore } from '@/store/modules/userMainStore';
+import { OperateType } from './script/types';
+import Split from './com/SplitCompontent.vue';
 
+const comActions: Record<string, any> = {
+    'split': Split
+};
 const store = userMainStore();
 const videoData = computed(() => store.videoData);
+const videoRef = ref<InstanceType<typeof VideoInner> | null>(null);
+const ativeComponents = ref<OperateType | null>(null);
+
+const onOperate = (type: OperateType) => {
+    if (ativeComponents.value === type) return;
+    ativeComponents.value = type;
+};
+/** 视频加载后取时长，不用单独获取一遍，所以手动触发操作 */
+const onVideoLoaded = () => {
+    onOperate(OperateType.SPLIT);
+}
+
+
 
 </script>
 

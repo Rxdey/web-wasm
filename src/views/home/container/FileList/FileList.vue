@@ -1,6 +1,6 @@
 <template>
     <div class="file-list" >
-        <div class="file-list__title" v-if="isShowName">线上视频列表</div>
+        <div class="file-list__title" v-if="isShowName">视频列表</div>
         <template v-if="videoList">
             <div class="file-list__item" :class="{ active: activeVideoId === video.id }" v-for="video in videoList" :key="video.id" :title="video.content" @click="selectFile(video)">
             <div class="file-cover">
@@ -44,7 +44,7 @@ onMounted(() => {
 <style lang="less" scoped>
 .file-list {
     &__title {
-        font-size: 16px;
+        font-size: 14px;
         padding: 12px 0;
         text-align: center;
         color: #989898;

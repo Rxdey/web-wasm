@@ -2,7 +2,7 @@ import { ref, watch, onMounted } from 'vue';
 
 export const useVideo = () => {
     const paused = ref(true);
-    const volume = ref(0);
+    const volume = ref(0.1);
     const muted = ref(true);
     const video = ref<HTMLVideoElement | null>(null)
 
@@ -42,6 +42,11 @@ export const useVideo = () => {
     const onPause = () => {
         paused.value = true;
     };
+    onMounted(() => {
+        if (video.value) {
+            video.value.volume = volume.value;
+        }
+    });
     watch(() => volume.value, (val) => {
         if (video.value) {
             video.value.volume = val;

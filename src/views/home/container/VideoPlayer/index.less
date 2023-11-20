@@ -1,14 +1,9 @@
 .video-player {
     height: 100%;
-    display: flex;
-    flex-flow: column;
     color: #fff;
-    &__container {
-        flex: 1;
-        min-height: 1px;
-        position: relative;
-    }
-
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
     &--upload {
         width: 600px;
         height: 300px;
@@ -21,23 +16,102 @@
         user-select: none;
     }
     &--video {
-        width: 100%;
+        min-width: 1px;
         height: 100%;
+        flex: 1;
     }
+    &--operate {
+        width: 480px;
+        border-left: 1px solid var(--convert-border-color);
+        position: relative;
+        color: var(--color-gray1);
+        .tip {
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+    }
+}
 
-    &__tool {
-        height: 200px;
-        border-top: 1px solid var(--convert-border-color);
-        display: flex;
-        flex-flow: column;
+.video-inner {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+
+    &--video {
+        flex: 1;
+        min-height: 1px;
+        position: relative;
+        background-color: #000;
+
+        #video {
+            max-width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            display: block;
+            // max-height: 400px;
+        }
+
+        .control {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 16px 32px;
+            width: 100%;
+
+            .control-wrap {
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: flex-end;
+            }
+
+            .control-button {
+                cursor: pointer;
+                position: relative;
+                display: block;
+
+                & + .control-button {
+                    margin-left: 16px;
+                }
+
+                .voice-line {
+                    --voice-width: 10%;
+                    position: absolute;
+                    width: 100px;
+                    height: 4px;
+                    background-color: rgba(255, 255, 255, 0.5);
+                    left: 150%;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    cursor: pointer;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: var(--voice-width);
+                        height: 100%;
+                        background-color: #fff;
+                    }
+                }
+            }
+        }
+    }
+    &--tool {
         position: relative;
     }
-    // &--btnwrap {
-    //     height: 40px;
-    // }
     &--timeline {
-        min-height: 1px;
-        flex: 1;
+        border-top: 1px solid var(--convert-border-color);
+        height: 100px;
+        position: relative;
         #timeline {
             height: 100%;
         }

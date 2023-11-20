@@ -1,9 +1,9 @@
 <template>
   <div class="home">
     <div class="menu-wrap"></div>
-    <div class="file-wrap" v-drag.right="{ minWidth: 60, maxWidth: 500 }">
+    <!-- <div class="file-wrap" v-drag.right="{ minWidth: 60, maxWidth: 500 }">
       <FileList />
-    </div>
+    </div> -->
     <div class="video-wrap">
       <VideoPlayer />
     </div>
@@ -18,7 +18,7 @@ import { userMainStore } from '@/store/modules/userMainStore';
 
 const store = userMainStore();
 onMounted(() => {
-  store.GET_VIDEO_LIST({ force: false });
+  // store.GET_VIDEO_LIST({ force: false });
 })
 
 </script>

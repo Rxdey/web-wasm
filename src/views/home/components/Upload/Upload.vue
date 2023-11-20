@@ -31,6 +31,8 @@ const vaildFile = (files: FileList | []) => {
     }
     store.UPDATE_VIDEO_DATA({
         path: window.URL.createObjectURL(files[0]),
+        size: files[0].size,
+        type: files[0].type
     })
     emit('change', files[0]);
 };

@@ -11,6 +11,7 @@ const player = {
 
 class TimeLine {
     #maxLevel = 0;
+    limit = false;
     canvasAttr = {
         offset: 0,
         count: 0,
@@ -55,7 +56,12 @@ class TimeLine {
         // 选框图片的高度
         this.renderHeight = 38 * 2;
         this.options.limit.height = 38;
-        this.options.limit.end.time = this.options.totalTime / 2;
+        this.options.limit.end.time = this.options.totalTime;
+        if (this.options.onLimitUpdate) this.options.onLimitUpdate({
+            start: this.options.limit.start.time,
+            end: this.options.limit.end.time,
+            type: 'endChange'
+        });
         this.options.limit.end.left = this.getTimeX(this.options.limit.end.time) - this.options.limit.width;
         this.options.limit.start.left = this.getTimeX(this.options.limit.start.time);
 
@@ -89,7 +95,7 @@ class TimeLine {
         };
         window.addEventListener('resize', () => {
             this.resize();
-        })
+        });
     }
     resize() {
         this.canvas.setDimensions({
@@ -99,13 +105,20 @@ class TimeLine {
         this.render();
         // this.canvas.renderAll();
     }
+    setlimit(data) {
+        this.limit = data;
+        this.canvas.clear();
+        this.draw();
+    }
     draw() {
         this.render();
         const nodes = [];
-        this.startBar = this.drawStart();
-        this.endBar = this.drawEnd();
-        this.rederLimitRact();
-        nodes.push(this.startBar, this.endBar);
+        if (this.limit) {
+            this.startBar = this.drawStart();
+            this.endBar = this.drawEnd();
+            this.rederLimitRact();
+            nodes.push(this.startBar, this.endBar);
+        }
         this.currentLine = this.drawCurrent();
         nodes.push(this.currentLine);
         this.canvas.add(...nodes);
@@ -273,7 +286,7 @@ class TimeLine {
         const text = new fabric.Text(timeStr, {
             // top: this.canvas.height - 24,
             top: this.canvas.height - 18,
-            left: width + 5,
+            left: 5,
             fontSize: 11,
             fill: '#f00',
             selectable: false
@@ -358,7 +371,7 @@ class TimeLine {
             width: endX,
             height: this.renderHeight / 2,
             fill: 'rgba(85, 240, 214, 0.178)',
-            selectable: false
+            selectable: false,
         });
         const text = new fabric.Text(formatTime(this.options.totalTime), {
             top: offset + this.background.height,
@@ -373,8 +386,6 @@ class TimeLine {
             selectable: false,
             hoverCursor: 'default',
             subTargetCheck: true
-            // evented: false,
-            // 'pointer-events': 'none'
         });
         ract.on('mousedown', ({ e }) => {
             const { left } = this.canvas._offset;
